@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><config debug="98">
 	<temp path="work"/>
-	<database dbname="test" drivername="org.postgresql.Driver" encoding="UTF-8" host="" 
+	<database dbname="test" drivername="org.postgresql.Driver" encoding="UTF-8" host="host" 
 		name="test" passwd="psw" srid="3301" typestr="postgresql" user="user">
 	  	<system_databases>postgres, template0, template1, template_postgis</system_databases>
 		<system_schemas>information_schema, topology, pg_catalog</system_schemas>
