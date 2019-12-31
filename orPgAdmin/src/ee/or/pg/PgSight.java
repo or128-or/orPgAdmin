@@ -28,8 +28,12 @@ public class PgSight extends Sight
 	{
 		super();
 		setServlet( aServlet);
-		User = new User();
-		User.setName( "test");
+		if( aRequest.getRemoteUser() != null ){
+			User = new User( aRequest);
+		}else{
+			User = new User();
+			User.setName( "test");
+		}
 		try {
 			init();
 			setMySight( this, aRequest);
@@ -370,11 +374,12 @@ public class PgSight extends Sight
 					aDataFile = saveViews( PgConnection.getConnection(aDbs, sName), aSchema, sSchema, sOwner);
 				}else if( iType == 3){
 					PgConnection aConnection = aSchema.getConnection();
-					if( !aSchema.isLoaded() ) aSchema.load( aConnection);
+					if( !aSchema.isLoaded() ) aSchema.load();
 					aDataFile = saveSchema( aConnection, aSchema, sSchema, sOwner);
 				}
 	  			if( aDataFile != null ){
-	  				getServlet().downloadFile( aResponse, aDataFile, "text/plain");  					
+	  				getServlet().downloadFile( aResponse, aDataFile, "text/plain"); 
+	  				return null;
 				}
 			} catch (Exception aE) {
 				log( aE);
@@ -532,7 +537,7 @@ public class PgSight extends Sight
 	}
 	public File saveSchema( PgConnection aDb, PgSchema aSchema, String sSchema, String sOwner) throws Exception
 	{
-		String sCatName = getLogCatName();
+		String sCatName = isDebug( 98)? getLogCatName(): getLogCatName() + "/" + User.getLogName();
 		if( aSchema != null && sCatName != null ){
 			String sFileName = sCatName + "/" + "createSchema_";
 			return saveSchema( aDb, aSchema, sSchema, sOwner, sFileName, 3);
@@ -541,7 +546,8 @@ public class PgSight extends Sight
 	}
 	private File saveSchema( PgConnection aDb, PgSchema aSchema, String sSchema, String sOwner, String sFileName, int iType) throws Exception
 	{
-		PrintStream aPS = GlobalFile.getPrintStream( sFileName + (( sSchema != null)? sSchema: aSchema.getName()), false);
+		String sFile = sFileName + (( sSchema != null)? sSchema: aSchema.getName());
+		PrintStream aPS = GlobalFile.getPrintStream( sFile, false);
 		if( ( iType & 1) > 0){
 			ArrayList<PgTable> aTables = aSchema.getTables();
 			for( PgTable aTable: aTables) {
@@ -559,13 +565,13 @@ public class PgSight extends Sight
 			ArrayList<PgView> aViews = aSchema.getViews();
 //			for( PgView aView: aViews) aView.analize();
 			ArrayList<PgView> aOViews = PgView.orderViews( aDb, aViews);
-			if( aViews.size() > 0 ) log( "Järjestati " + aOViews.size() +"/" + aViews.size());
+			if( aViews.size() > 0 ) log( 98, "Järjestati " + aOViews.size() +"/" + aViews.size());
 			for( PgView aView: aOViews) {
 				aPS.println( aView.toCreateString( sSchema, sOwner));
 				aPS.println();
 			}
 		}
 		aPS.close();
-		return new File( sFileName);
+		return new File( sFile);
 	}
 }

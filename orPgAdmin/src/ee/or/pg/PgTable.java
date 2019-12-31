@@ -131,7 +131,7 @@ public class PgTable extends DataObject
 	       		aAttr.load( aRs);
 	       		aAttributes.add( aAttr);
 	       		if( aAttr.isGeometry() ){
-	       			ResultSet aRGs = aDb.execSelect( "SELECT * FROM geo_columns WHERE f_table_catalog='" + aSchema.getDatabase().getName() + 
+	       			ResultSet aRGs = aDb.execSelect( "SELECT * FROM geometry_columns WHERE f_table_catalog='" + aSchema.getDatabase().getName() + 
 	       				"' AND f_table_schema='" + aSchema.getName() + "' AND f_table_name='" + getName() + 
 	       				"' AND f_geometry_column='" + aAttr.getName() + "'");
 	       			while( aRGs.next() ){

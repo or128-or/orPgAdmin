@@ -41,7 +41,7 @@ public class PgAttribute {
 		//geometry(Point,4326)
 
 //		int iDim = aRs.getShort( "coord_dimension");
-		int iSrid = aRs.getShort( "srid");
+		int iSrid = aRs.getInt( "srid");
 		String sType = aRs.getString( "type");
 		sGeometry = "geometry(" + sType + "," + iSrid + ")";
 	}

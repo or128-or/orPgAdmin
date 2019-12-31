@@ -312,25 +312,22 @@ public class PgSchema extends DataObject {
 	{
 		String sSchema = aSchema.getName();
 		String sOwner = aSchema.getOwner();
-		String sCatName = aSight.getLogCatName();
-		if( aSchema != null && sCatName != null ){
-			String sFileName = sCatName + "/" + "addToSchema_" + 
-				(( sSchema != null)? sSchema: aSchema.getName()) + ".sql";
+		String sCatName = aSight.isDebug( 98)? aSight.getLogCatName(): aSight.getLogCatName() + "/" + aSight.User.getLogName();;
+		String sFileName = sCatName + "/" + "addToSchema_" + 
+			(( sSchema != null)? sSchema: aSchema.getName()) + ".sql";
 
-			PrintStream aPS = GlobalFile.getPrintStream( sFileName, false);
-			if( aProblems != null ) for( PgProblem aProblem: aProblems) {	
-				String sLine = aProblem.setSql( sSchema, sOwner);
-				if( sLine != null )  aPS.println( sLine);
-			}
-			if( aProblems != null ) for( PgProblem aProblem: aProblems) {	
-				String sLine = aProblem.setSqlConstraint( sSchema);
-				if( sLine != null )  aPS.println( sLine);
-			}
-			setSqlViews( aPS, sSchema, sOwner);
-			aPS.close();
-			return new File( sFileName);
+		PrintStream aPS = GlobalFile.getPrintStream( sFileName, false);
+		if( aProblems != null ) for( PgProblem aProblem: aProblems) {	
+			String sLine = aProblem.setSql( sSchema, sOwner);
+			if( sLine != null )  aPS.println( sLine);
 		}
-		return null;
+		if( aProblems != null ) for( PgProblem aProblem: aProblems) {	
+			String sLine = aProblem.setSqlConstraint( sSchema);
+			if( sLine != null )  aPS.println( sLine);
+		}
+		setSqlViews( aPS, sSchema, sOwner);
+		aPS.close();
+		return new File( sFileName);
 	}
 	public void setSqlViews( PrintStream aPS, String sSchema, String sOwner)
 	{
@@ -349,7 +346,7 @@ public class PgSchema extends DataObject {
 		if( aDViews.size() > 0 ){
 			for( PgView aView: aDViews) aView.analize();
 			ArrayList<PgView> aOViews = PgView.orderViews( getConnection(), aDViews);
-			if( aDViews.size() > 0 )  getConnection().log( "Järjestati " + aOViews.size() +"/" + aDViews.size());
+			if( aDViews.size() > 0 )  getConnection().log( 98, "Järjestati " + aOViews.size() +"/" + aDViews.size());
 			for( int i = aDViews.size(); --i >= 0; ) {
 				PgView aDView = aDViews.get( i);
 				aPS.println( "DROP VIEW IF EXISTS " + aDView.getName() + " CASCADE;");
