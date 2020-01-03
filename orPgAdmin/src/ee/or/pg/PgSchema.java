@@ -28,7 +28,7 @@ public class PgSchema extends DataObject {
 				this.bChildOpened = bOpened;
 				return;
 			}
-			int i = sName.indexOf( "|");
+			int i = sName.indexOf( PgSight.cSeparator);
 			String sNameDb, sNameAdd = null;
 			if( i > 0 ){
 				sNameDb = sName.substring( 0, i);
@@ -98,7 +98,7 @@ public class PgSchema extends DataObject {
 	private PgDatabase aDatabase;
 	public PgConnection getConnection(){ return aDatabase.getConnection();}
 	public PgDatabase getDatabase(){ return aDatabase;}
-	public String getFullName(){ return aDatabase.getFullName() + "|" + getName();}
+	public String getFullName(){ return aDatabase.getFullName() + PgSight.cSeparator + getName();}
 
 	public boolean isOurObject( PgTable aTable){ 
 		PgConnection aConnection = getConnection();

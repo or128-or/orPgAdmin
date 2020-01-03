@@ -90,7 +90,8 @@ public class PgProblem
 		if( aTable != null ){
 			if( aTable.isTable() ){
 				if( aTableC == null ){ 
-					return aTable.toCreateConstraintsString( sSchema);
+					aTable.toCreateConstraintsString( sSchema);
+					return null;
 				}else if( cCase == '!'){
 					StringBuffer aBuf = new StringBuffer();
 					if( aProblemsC != null ){

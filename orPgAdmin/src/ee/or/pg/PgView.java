@@ -92,7 +92,7 @@ public class PgView extends PgTable
 				this.bChildOpened = bOpened;
 				return;
 			}
-			int i = sName.indexOf( "|");
+			int i = sName.indexOf( PgSight.cSeparator);
 			String sNameDb, sNameAdd = null;
 			if( i > 0 ){
 				sNameDb = sName.substring( 0, i);
@@ -448,7 +448,7 @@ public class PgView extends PgTable
 			}
 			sSql = aRequest.getParameter( "sql");
 			aDb.exec( toCreateString());
-			if( bNew) load( aDb);
+			if( bNew) load();
 			bChanged = false;
 			return true; // maybe this is not right
 		} catch( Exception aE){
@@ -481,16 +481,16 @@ public class PgView extends PgTable
 	}
 	public String getFullName( String sName)
 	{
-    	int i = sName.indexOf( "|"); // server
+    	int i = sName.indexOf( PgSight.cSeparator); // server
     	if( i>0 ) {
-        	int j = sName.indexOf( "|", ++i); // db
+        	int j = sName.indexOf( PgSight.cSeparator, ++i); // db
         	if( j > 0 ) {
         		i = j;
-        		j = sName.indexOf( "|", ++i); // schema
+        		j = sName.indexOf( PgSight.cSeparator, ++i); // schema
         		if( j > 0 ) {
         			return sName.substring( 0, ++j) + getName();
         		}
-        		return sName + "|" + getName();
+        		return sName + PgSight.cSeparator + getName();
         	}
     	}
     	return null;
@@ -746,7 +746,7 @@ public class PgView extends PgTable
 	    	}
 	    	if( aView != null ){
 				aDoc.addChildNode( aNodeView, "sql", aView.getSql());
-				(( PgSight)aSight).setXmlNames( aDoc, sName, true);
+				(( PgSight)aSight).setXmlNames( aDoc, sName, iRet != 23);
 	    	}
 	    }
 		return aDoc;

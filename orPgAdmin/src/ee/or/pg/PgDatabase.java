@@ -24,7 +24,7 @@ public class PgDatabase extends DataObject {
 				this.bChildOpened = bOpened;
 				return;
 			}
-			int i = sName.indexOf( "|");
+			int i = sName.indexOf( PgSight.cSeparator);
 			String sNameDb, sNameAdd = null;
 			if( i > 0 ){
 				sNameDb = sName.substring( 0, i);
@@ -53,7 +53,7 @@ public class PgDatabase extends DataObject {
 		aConnection.setDatabaseName( getName());
 		return aConnection;
 	}
-	public String getFullName(){ return  aConnection.getName() + "|" + getName();}
+	public String getFullName(){ return  aConnection.getName() + PgSight.cSeparator + getName();}
 	
 	public PgDatabase( PgConnection aConnection, String sName) throws MException 
 	{
@@ -118,7 +118,7 @@ public class PgDatabase extends DataObject {
     public PgSchema getSchema( String sName)
     {
     	if( sName != null ){
-    		int i = sName.indexOf( "|");
+    		int i = sName.indexOf( PgSight.cSeparator);
     		String sNameCon = ( i > 0 )? sName.substring( 0, i): sName;
     		if( aDbs != null ) for( PgSchema aSchema: aDbs) {
     			if( aSchema.getName().equalsIgnoreCase( sNameCon) ) {
@@ -130,7 +130,7 @@ public class PgDatabase extends DataObject {
     }
     public PgView getView( String sName)
     {
-		int i = sName.indexOf( "|");
+		int i = sName.indexOf( PgSight.cSeparator);
 		if( i > 0 ){
 			String sNameCon = sName.substring( 0, i);
 			String sNameDb = sName.substring( ++i);
@@ -144,7 +144,7 @@ public class PgDatabase extends DataObject {
     }
     public  ArrayList<PgView> getViews( String sName)
     { 
-		int i = sName.indexOf( "|");
+		int i = sName.indexOf( PgSight.cSeparator);
 		String sNameCon = ( i > 0 )? sName.substring( 0, i): sName;
 		if( aDbs != null ) for( PgSchema aSchema: aDbs) {
 			if( aSchema.getName().equalsIgnoreCase( sNameCon) )  return aSchema.getViews();

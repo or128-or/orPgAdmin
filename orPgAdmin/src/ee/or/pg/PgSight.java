@@ -23,6 +23,7 @@ public class PgSight extends Sight
 
 	private ArrayList<PgConnection> aDbs;
 	public ArrayList<PgConnection> getConnections(){ return aDbs;}
+	public static char cSeparator = '/';
 	
 	public PgSight( ISServlet aServlet, HttpServletRequest aRequest) 
 	{
@@ -81,7 +82,7 @@ public class PgSight extends Sight
 	    else if(  sReq.equalsIgnoreCase( "setServerMenu") ){
     		int iRet = getReturn( aRequest);
     		String sName = aRequest.getParameter( "NAME");
-    		int i = sName.indexOf( "|");
+    		int i = sName.indexOf( PgSight.cSeparator);
     		String sNameDb, sNameAdd = null;
     		if( i > 0 ){
     			sNameDb = sName.substring( 0, i);
@@ -133,7 +134,7 @@ public class PgSight extends Sight
 				}
 			}else if( iRet == 12 ) { // load databases
 				String sName = aRequest.getParameter( "NAME"); 
-				int i = sName.indexOf( "|");
+				int i = sName.indexOf( PgSight.cSeparator);
 				if( i > 0 ){
 					String sNameCon = sName.substring( 0, i);
 					String sNameDb = sName.substring( ++i);
@@ -220,6 +221,7 @@ public class PgSight extends Sight
 				} catch (Exception aE) {
 					setError( aE.toString());
 					aDoc.addChildNode( aDoc.getRootNode(), "msg", "Connection to server not succeeded");
+					log( aE.toString());
 				}
 			}else if( iRet == 22 ){ // create new
 				aNodeServer = null;
@@ -464,19 +466,19 @@ public class PgSight extends Sight
 	}
     public void setXmlNames( DOMData aDoc, Node aNodeViews, String sName, boolean bAddView) 
     {
-    	int i = sName.indexOf( "|");
+    	int i = sName.indexOf( cSeparator);
     	if( i>0 ) {
         	aDoc.addChildNode( aNodeViews, "connection", sName.substring( 0, i)); 
-        	int j = sName.indexOf( "|", ++i);
+        	int j = sName.indexOf( cSeparator, ++i);
         	if( j > 0 ) {
         		aDoc.addChildNode( aNodeViews, "database", sName.substring( i, j)); 
         		i = j;
-        		j = sName.indexOf( "|", ++i);
+        		j = sName.indexOf( cSeparator, ++i);
             	if( j > 0 ) {
             		aDoc.addChildNode( aNodeViews, "schema", sName.substring( i, j));
             		if( bAddView ) {
                 		i = j;
-                		j = sName.indexOf( "|", ++i);
+                		j = sName.indexOf( cSeparator, ++i);
                     	if( j > 0 ) {
                     		aDoc.addChildNode( aNodeViews, "view", sName.substring( i, j)); 
                     	}else
@@ -492,19 +494,19 @@ public class PgSight extends Sight
     public void setXmlNames( DOMData aDoc, String sName, boolean bAddTable) 
     {
     	Node aNode = aDoc.addChildNode( aDoc.getRootNode(), "navi");
-    	int i = sName.indexOf( "|");
+    	int i = sName.indexOf( cSeparator);
     	if( i>0 ) {
         	aDoc.addChildNode( aNode, "connection", sName.substring( 0, i)); 
-        	int j = sName.indexOf( "|", ++i);
+        	int j = sName.indexOf( cSeparator, ++i);
         	if( j > 0 ) {
         		aDoc.addChildNode( aNode, "database", sName.substring( i, j)); 
         		i = j;
-        		j = sName.indexOf( "|", ++i);
+        		j = sName.indexOf( cSeparator, ++i);
             	if( j > 0 ) {
             		aDoc.addChildNode( aNode, "schema", sName.substring( i, j));
             		if( bAddTable ) {
                 		i = j;
-                		j = sName.indexOf( "|", ++i);
+                		j = sName.indexOf( cSeparator, ++i);
                     	if( j > 0 ) {
                     		aDoc.addChildNode( aNode, "table", sName.substring( i, j)); 
                     	}else
@@ -519,7 +521,7 @@ public class PgSight extends Sight
 	}
 	public File saveViews( PgConnection aDb, PgSchema aSchema, String sSchema, String sOwner) throws Exception
 	{
-		String sCatName = getLogCatName();
+		String sCatName = isDebug( 98)? getLogCatName(): getLogCatName() + "/" + User.getLogName();
 		if( aSchema != null && sCatName != null ){
 			String sFileName = sCatName + "/" + "createViews_";
 			return saveSchema( aDb, aSchema, sSchema, sOwner, sFileName, 2);
@@ -528,7 +530,7 @@ public class PgSight extends Sight
 	}
 	public File saveTables( PgConnection aDb, PgSchema aSchema, String sSchema, String sOwner) throws Exception
 	{
-		String sCatName = getLogCatName();
+		String sCatName = isDebug( 98)? getLogCatName(): getLogCatName() + "/" + User.getLogName();
 		if( aSchema != null && sCatName != null ){
 			String sFileName = sCatName + "/" + "createTables_";
 			return saveSchema( aDb, aSchema, sSchema, sOwner, sFileName, 1);

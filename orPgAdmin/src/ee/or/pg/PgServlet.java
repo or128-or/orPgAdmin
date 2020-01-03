@@ -17,8 +17,9 @@ public class PgServlet extends ISServlet
 	
     public void init( ServletConfig config) throws ServletException 
     {
+        log( "Start of init PgServlet");
         super.init( config);
-        log( "End of PgServlet");
+        log( "End of init PgServlet");
     } 
     public Sight createSight( HttpServletRequest aRequest)
     {

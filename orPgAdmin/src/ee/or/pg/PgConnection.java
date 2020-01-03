@@ -30,7 +30,7 @@ public class PgConnection extends Database {
 				this.bChildOpened = bOpened;
 				return;
 			}
-			int i = sName.indexOf( "|");
+			int i = sName.indexOf( PgSight.cSeparator);
 			String sNameDb, sNameAdd = null;
 			if( i >= 0 ){
 				sNameDb = sName.substring( 0, i);
@@ -160,7 +160,7 @@ public class PgConnection extends Database {
 	}
 	public void loadDatabase( String sName) 
 	{
-		int i = sName.indexOf( "|");
+		int i = sName.indexOf( PgSight.cSeparator);
 		String sNameDb, sNameAdd = null;
 		if( i > 0 ){
 			sNameDb = sName.substring( 0, i);
@@ -180,10 +180,10 @@ public class PgConnection extends Database {
 	}
     public PgDatabase getDatabase( String sName)
     {
-		int i = sName.indexOf( "|");
+		int i = sName.indexOf( PgSight.cSeparator);
 		if( i > 0 ){
 			sName = sName.substring( ++i);
-			i = sName.indexOf( "|");
+			i = sName.indexOf( PgSight.cSeparator);
 			if( i > 0 ) sName = sName.substring( 0, i);
 		}
 		if( aDbs != null ) for( PgDatabase aDb: aDbs) {
@@ -193,7 +193,7 @@ public class PgConnection extends Database {
     }
     public PgSchema getSchema( String sName) // siin on täisnimi
     {
-    	int i = sName.indexOf( "|");
+    	int i = sName.indexOf( PgSight.cSeparator);
     	if( i > 0 ){
     		return _getSchema( sName.substring( ++i));
 		}
@@ -201,7 +201,7 @@ public class PgConnection extends Database {
     }
     private PgSchema _getSchema( String sName) // siin on nimi alates db-st
     {
-		int i = sName.indexOf( "|");
+		int i = sName.indexOf( PgSight.cSeparator);
 		if( i > 0 ){
 			String sNameCon = sName.substring( 0, i);
 			String sNameDb = sName.substring( ++i);
@@ -215,7 +215,7 @@ public class PgConnection extends Database {
     }
     public PgView getView( String sName)
     {
-		int i = sName.indexOf( "|");
+		int i = sName.indexOf( PgSight.cSeparator);
 		if( i > 0 ){
 			String sNameCon = sName.substring( 0, i);
 			String sNameDb = sName.substring( ++i);
@@ -229,13 +229,13 @@ public class PgConnection extends Database {
     }
     public static PgConnection getConnection( ArrayList<PgConnection> aDbs, String sName)
     {
-		int i = sName.indexOf( "|");
+		int i = sName.indexOf( PgSight.cSeparator);
 		String sNameCon = ( i > 0 )? sName.substring( 0, i): sName;
 		if( aDbs != null ) for( PgConnection aDb: aDbs) {
 			if( aDb.getName().equalsIgnoreCase( sNameCon) ){
 				if( i > 0 ){
 					String sNameDb = sName.substring( ++i);
-					i = sNameDb.indexOf( "|");
+					i = sNameDb.indexOf( PgSight.cSeparator);
 					String sNameSc = null;
 					if( i > 0 ){
 						sNameSc = sNameDb.substring( i+1);
@@ -243,7 +243,7 @@ public class PgConnection extends Database {
 					}
 					aDb.setDatabaseName( sNameDb);
 					if( sNameSc != null ){
-						i = sNameSc.indexOf( "|");
+						i = sNameSc.indexOf( PgSight.cSeparator);
 						aDb.setSchema( (i>0)? sNameSc.substring( 0, i): sNameSc);
 					}
 				}
@@ -256,7 +256,7 @@ public class PgConnection extends Database {
     {
 		int iId = 0;
 		int n = aDbs.size();
-    	int i = sName.indexOf( "|");
+    	int i = sName.indexOf( PgSight.cSeparator);
 		String sNameCon = ( i > 0 )? sName.substring( 0, i): sName;
 		if( aDbs != null ) for( PgConnection aDb: aDbs) { 
 			if( aDb.getName().equalsIgnoreCase( sNameCon) ) break;
@@ -266,7 +266,7 @@ public class PgConnection extends Database {
     }
     public static PgDatabase getDatabase( ArrayList<PgConnection> aDbs, String sName)
     {
-		int i = sName.indexOf( "|");
+		int i = sName.indexOf( PgSight.cSeparator);
 		if( i > 0 ){
 			String sNameCon = sName.substring( 0, i);
 			String sNameDb = sName.substring( ++i);
@@ -280,7 +280,7 @@ public class PgConnection extends Database {
    }
    public static PgSchema getSchema( ArrayList<PgConnection> aDbs, String sName)
     {
-		int i = sName.indexOf( "|");
+		int i = sName.indexOf( PgSight.cSeparator);
 		if( i > 0 ){
 			String sNameCon = sName.substring( 0, i);
 			String sNameDb = sName.substring( ++i);
@@ -294,7 +294,7 @@ public class PgConnection extends Database {
     }
     public static PgView getView( ArrayList<PgConnection> aDbs, String sName)
     {
-		int i = sName.indexOf( "|");
+		int i = sName.indexOf( PgSight.cSeparator);
 		if( i > 0 ){
 			String sNameCon = sName.substring( 0, i);
 			String sNameDb = sName.substring( ++i);
@@ -308,7 +308,7 @@ public class PgConnection extends Database {
     }
     public  ArrayList<PgView> getViews( String sName)
     {
-		int i = sName.indexOf( "|");
+		int i = sName.indexOf( PgSight.cSeparator);
 		if( i > 0 ){
 			String sNameCon = sName.substring( 0, i);
 			String sNameDb = sName.substring( ++i);
@@ -322,7 +322,7 @@ public class PgConnection extends Database {
     }
     public static  ArrayList<PgView> getViews( ArrayList<PgConnection> aDbs, String sName)
     {
-		int i = sName.indexOf( "|");
+		int i = sName.indexOf( PgSight.cSeparator);
 		if( i > 0 ){
 			String sNameCon = sName.substring( 0, i);
 			String sNameDb = sName.substring( ++i);
@@ -425,12 +425,12 @@ public class PgConnection extends Database {
 	}
     public static String trimToSchema( String sName) 
     {
-    	int i = sName.indexOf( "|");
+    	int i = sName.indexOf( PgSight.cSeparator);
     	if( i>0 ) {
-        	int j = sName.indexOf( "|", ++i);
+        	int j = sName.indexOf( PgSight.cSeparator, ++i);
         	if( j > 0 ) {
         		i = j;
-        		j = sName.indexOf( "|", ++i);
+        		j = sName.indexOf( PgSight.cSeparator, ++i);
             	return ( j > 0 )? sName.substring( 0, j): sName; 
         	}
     	}
@@ -438,12 +438,12 @@ public class PgConnection extends Database {
 	}
     public static String getSchemaName( String sName) 
     {
-    	int i = sName.indexOf( "|");
+    	int i = sName.indexOf( PgSight.cSeparator);
     	if( i>0 ) {
-        	int j = sName.indexOf( "|", ++i);
+        	int j = sName.indexOf( PgSight.cSeparator, ++i);
         	if( j > 0 ) {
         		i = j;
-        		j = sName.indexOf( "|", ++i);
+        		j = sName.indexOf( PgSight.cSeparator, ++i);
             	return ( j > 0 )? sName.substring( i, j): sName.substring( i); 
         	}
     	}
@@ -451,12 +451,12 @@ public class PgConnection extends Database {
 	}
     public static String getViewName( String sName) 
     {
-    	int i = sName.indexOf( "|");
+    	int i = sName.indexOf( PgSight.cSeparator);
     	if( i>0 ) {
-        	int j = sName.indexOf( "|", ++i);
+        	int j = sName.indexOf( PgSight.cSeparator, ++i);
         	if( j > 0 ) {
         		i = j;
-        		j = sName.indexOf( "|", ++i);
+        		j = sName.indexOf( PgSight.cSeparator, ++i);
         		if( j > 0 ) {
         			return sName.substring( ++j);
         		}
@@ -591,7 +591,7 @@ public class PgConnection extends Database {
 			}
 		}else if( iRet == 12 ) { // load databases
 			String sName = aRequest.getParameter( "NAME"); 
-			int i = sName.indexOf( "|");
+			int i = sName.indexOf( PgSight.cSeparator);
 			if( i > 0 ){
 				String sNameCon = sName.substring( 0, i);
 				String sNameDb = sName.substring( ++i);
