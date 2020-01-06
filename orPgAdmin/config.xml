@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <config debug="0">
 	<temp path="work"/>
-	<database dbname="" drivername="org.postgresql.Driver" encoding="UTF-8" host="localhost:5432" name="test" passwd="oror128" srid="3301" typestr="postgresql" user="postgres">
+	<database dbname="" drivername="org.postgresql.Driver" encoding="UTF-8" host="localhost:5432" name="test" passwd="" srid="3301" typestr="postgresql" user="postgres">
 	  	<system_databases>template0, template1, template_postgis</system_databases>
 		<system_schemas>information_schema, topology, pg_catalog</system_schemas>
 	  	<system_tables>spatial_ref_sys</system_tables>
 		<system_views>raster_columns, raster_overviews, geometry_columns, geography_columns</system_views>
 	</database>
-<database dbname="" drivername="org.postgresql.Driver" encoding="UTF-8" host="" name="xxx" passwd="" srid="3301" typestr="postgresql" user="">
-<system_schemas/>
-<system_databases/>
-<system_views/>
-<system_tables/>
-</database>
 </config>
